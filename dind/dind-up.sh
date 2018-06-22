@@ -16,10 +16,12 @@
 
 KUBE_ROOT=${KUBE_ROOT:-"../../kubernetes"}
 K8S_VERSION=$(cat ${KUBE_ROOT}/bazel-out/stable-status.txt | grep STABLE_DOCKER_TAG | awk '{print $2}')
-
-TMPDIR=$(mktemp -d -p /tmp)
 echo "Config dir lives at ${TMPDIR}"
 CONTAINER=$(docker run -d --privileged=true --security-opt seccomp:unconfined --cap-add=SYS_ADMIN \
-  -v /lib/modules:/lib/modules:ro,rshared -v /sys/fs/cgroup:/sys/fs/cgroup:ro,rshared -v ${TMPDIR}:/var/kubernetes:rw,rshared \
+  -v /lib/modules:/lib/modules:ro,rshared -v /sys/fs/cgroup:/sys/fs/cgroup:ro,rshared --tmpfs /var/kubernetes:rw,rshared \
   k8s.gcr.io/dind-cluster-amd64:${K8S_VERSION})
 echo "The cluster lives in container ${CONTAINER}"
+echo "to connect use:"
+echo "docker cp ${CONTAINER}:/var/kubernetes/kubeconfig /tmp/kubeconfig"
+echo "then use the kubeconfig like:"
+echo "KUBECONFIG=/tmp/kubeconfig kubectl get po --all-namespaces"
