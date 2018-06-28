@@ -85,7 +85,12 @@ RUN_OPTS="${RUN_OPTS} -e HOME=${HOME}"
 RUN_OPTS="${RUN_OPTS} --tmpfs /tmp:exec,mode=777"
 
 # + `${HOME}/.cache/bazel` to share bazel cache across builds
-RUN_OPTS="${RUN_OPTS} -v ${BAZEL_CACHE}:${BAZEL_CACHE}:delegated"
+#RUN_OPTS="${RUN_OPTS} -v ${BAZEL_CACHE}:${BAZEL_CACHE}"
+
+CACHE_VOLUME_NAME="bazel-cache"
+#RUN_OPTS="${RUN_OPTS} --tmpfs ${BAZEL_CACHE}:exec,mode=777,uid=${_UID}"
+RUN_OPTS="${RUN_OPTS} -v ${CACHE_VOLUME_NAME}:${BAZEL_CACHE}"
+RUN_OPTS="${RUN_OPTS} -v ${BAZEL_CACHE}:/host-cache"
 
 # + `${REPO}` so we can build the code in REPO
 RUN_OPTS="${RUN_OPTS} -v ${REPO}:${REPO}:delegated"
@@ -104,8 +109,13 @@ if [ -z "${DOCKER_EXTRA:-set}" ]; then
     RUN_OPTS="${RUN_OPTS} ${DOCKER_EXTRA:-}"
 fi
 
+CONTAINER_NAME="planter_${RANDOM}"
 # this is the command we will actually run
-CMD="docker run ${RUN_OPTS} ${IMAGE} ${1+"$@"}"
+CMD="docker volume create ${CACHE_VOLUME_OPTS:-} ${CACHE_VOLUME_NAME}"
+CMD="${CMD} && docker rm planter-data-container & docker run --name planter-data-container --entrypoint=/bin/sh -v ${CACHE_VOLUME_NAME}:${BAZEL_CACHE} ${IMAGE} -c 'chown -R ${_UID}:${_GID} ${BAZEL_CACHE}' || echo 'container already exists'"
+INNER_CMD="/bin/bash -c \"rsync -ah --info=progress2 --safe-links --no-compress --exclude=install/* /host-cache/ ${BAZEL_CACHE} && ${1+$@} && rsync -ah --info=progress2 --no-compress --safe-links --exclude=install/* ${BAZEL_CACHE}/ /host-cache\""
+CMD="${CMD} && docker create --name ${CONTAINER_NAME} ${RUN_OPTS} ${IMAGE} ${INNER_CMD}"
+CMD="${CMD} && docker start -ai ${CONTAINER_NAME}"
 # if not NO_PULL then including pulling the image before running
 if [ -z "${NO_PULL+set}" ]; then
     CMD="docker pull ${IMAGE} && ${CMD}"
