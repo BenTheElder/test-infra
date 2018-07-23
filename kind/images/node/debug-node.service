@@ -1,0 +1,32 @@
+# Copyright 2018 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# this service runs some debug stuff
+# TODO(bentheelder): remove this!
+[Unit]
+Description=Debug node
+Requires=multi-user.target
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+#ExecStart=/bin/bash -c 'udevadm info -q all -a /dev/sda1'
+#ExecStart=/bin/bash -c 'udevadm info -q property -n /dev/sda1 --export'
+ExecStart=/bin/bash -c 'docker run hello-world && echo "product uuid" && cat /sys/class/dmi/id/product_uuid && echo "product name" && cat /sys/class/dmi/id/product_name'
+# && /usr/local/bin/kubeadm.sh'
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
