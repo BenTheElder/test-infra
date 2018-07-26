@@ -481,6 +481,14 @@
   version = "1.1.2"
 
 [[projects]]
+  name = "github.com/jteeuwen/go-bindata"
+  packages = [
+    ".",
+    "go-bindata",
+  ]
+  revision = "6025e8de665b31fa74ab1a66f2cddd8c0abf887e"
+
+[[projects]]
   branch = "master"
   name = "github.com/kubernetes/repo-infra"
   packages = ["kazel"]
@@ -1018,6 +1026,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7c466fb50475e454dc5b127608948fc58b8a7426af5d69ea1e0fac4ad60c4662"
+  inputs-digest = "2a762cd85c5d207ad485c3ed61ca81e31c428b01d6d8b370de951a3c0891043e"
   solver-name = "gps-cdcl"
   solver-version = 1
