@@ -19,6 +19,15 @@ set -o errexit
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
+# add_copyright_header replaces file $2 with an updated file containing
+# the header contents in file $1, with YEAR in $1 replaced with the current year
+add_copyright_header() {
+    local year
+    year="$(date '+%Y')"  
+    sed "s/YEAR/${year}/" "${1}" > "${2}.new"
+    cat "${2}" >> "${2}.new" && mv "${2}.new" "${2}" 
+}
+
 # install go-bindata from vendor locally
 OUTPUT_GOBIN="${REPO_ROOT}/_output/bin"
 GOBIN="${OUTPUT_GOBIN}" go install ./vendor/github.com/jteeuwen/go-bindata/go-bindata
@@ -27,5 +36,9 @@ GOBIN="${OUTPUT_GOBIN}" go install ./vendor/github.com/jteeuwen/go-bindata/go-bi
 # NOTE: go will only take package paths, not absolute directories
 cd "${REPO_ROOT}"
 PATH="${OUTPUT_GOBIN}:${PATH}" go generate ./kind/...
+
+# fix the lack of copyright header
+add_copyright_header "${REPO_ROOT}/kind/hack/copyright.go.txt" "${REPO_ROOT}/kind/pkg/build/sources/images_node_sources.go"
+
 # gofmt the generated file
 find ./kind -name "*.go" | xargs gofmt -s -w
