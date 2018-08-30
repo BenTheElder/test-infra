@@ -112,7 +112,7 @@ func (c *Context) Create(config *CreateConfig) error {
 	}
 
 	log.Infof(
-		"You can now use the cluster with:\n\nexport KUBECONFIG=\"%s\"\nkubectl cluster-info",
+		"You can now use the cluster with:\n\nexport KUBECONFIG=\"%s\"\nkubectl cluster-info\n",
 		c.KubeConfigPath(),
 	)
 
@@ -125,6 +125,11 @@ func (c *Context) Delete() error {
 	if err != nil {
 		return fmt.Errorf("error listing nodes: %v", err)
 	}
+	if len(nodes) == 0 {
+		log.Infof("No nodes found for cluster %s", c.Name)
+		return nil
+	}
+	log.Infof("Deleting node containers: %v ...", nodes)
 	return c.deleteNodes(nodes...)
 }
 

@@ -54,4 +54,5 @@ func run(flags *flags, cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatalf("Failed to delete cluster: %v", err)
 	}
+	log.Infof("Done.")
 }
