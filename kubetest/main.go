@@ -143,7 +143,7 @@ func defineFlags() *options {
 	flag.StringVar(&o.gcpProject, "gcp-project", "", "For use with gcloud commands")
 	flag.StringVar(&o.gcpProjectType, "gcp-project-type", "", "Explicitly indicate which project type to select from boskos")
 	flag.StringVar(&o.gcpServiceAccount, "gcp-service-account", "", "Service account to activate before using gcloud")
-	flag.StringVar(&o.gcpZone, "gcp-zone", "", "For use with gcloud commands")
+	flag.StringVar(&o.gcpZone, "gcp-zone", "us-central-1f", "For use with gcloud commands")
 	flag.StringVar(&o.gcpRegion, "gcp-region", "", "For use with gcloud commands")
 	flag.StringVar(&o.gcpNetwork, "gcp-network", "", "Cluster network. Must be set for --deployment=gke (TODO: other deployments).")
 	flag.StringVar(&o.gcpMasterImage, "gcp-master-image", "", "Master image type (cos|debian on GCE, n/a on GKE)")
