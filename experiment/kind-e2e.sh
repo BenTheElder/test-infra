@@ -22,11 +22,20 @@ set -o nounset
 set -o pipefail
 set -x
 
+TREE="$(dirname ${BASH_SOURCE[0]})/.."
+cd "${TREE}"
+
 # isntall `kind` to tempdir
-TMP_GOBIN=$(mktemp -d)
-trap 'rm -rf ${TMP_GOBIN}' EXIT
-env "GOBIN=${TMP_GOBIN}" go install k8s.io/test-infra/kind
-PATH="${TMP_GOBIN}:${PATH}"
+TMP_GOPATH=$(mktemp -d)
+trap 'rm -rf ${TMP_GOPATH}' EXIT
+
+# copy test-infra into tmp gopath
+cd "${TMP_GOPATH}"
+mkdir -p ./src/k8s.io/
+ln -s "${TREE}" "${TMP_GOPATH}/src/k8s.io"
+
+env "GOPATH=${TMP_GOPATH}" go install k8s.io/test-infra/kind
+PATH="${TMP_GOPATH}/bin:${PATH}"
 
 # build the base image
 # TODO(bentheelder): eliminate this once we publish this image
