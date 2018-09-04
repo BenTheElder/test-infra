@@ -25,20 +25,19 @@ set -x
 # get relative path to test infra root based on script source
 TREE="$(dirname ${BASH_SOURCE[0]})/.."
 # cd to the path
-OLD_PWD="${PWD}"
+ORIG_PWD="${PWD}"
 cd "${TREE}"
 # save it as the test infra root
 TESTINFRA_ROOT="${PWD}"
 # cd back
-cd "${OLD_PWD}"
+cd "${ORIG_PWD}"
 
 # isntall `kind` to tempdir
 TMP_GOPATH=$(mktemp -d)
 trap 'rm -rf ${TMP_GOPATH}' EXIT
 
 # copy test-infra into tmp gopath
-cd "${TMP_GOPATH}"
-mkdir -p ./src/k8s.io/
+mkdir -p "${TMP_GOPATH}/src/k8s.io/"
 ln -s "${TESTINFRA_ROOT}" "${TMP_GOPATH}/src/k8s.io"
 
 env "GOPATH=${TMP_GOPATH}" go install k8s.io/test-infra/kind
@@ -61,7 +60,7 @@ SKIP="${SKIP:-"Alpha|Kubectl|\\[(Disruptive|Feature:[^\\]]+|Flaky)\\]"}"
 KUBETEST_ARGS="--provider=skeleton --test --test_args=\"--ginkgo.focus=${FOCUS} --ginkgo.skip=${SKIP}\" --dump=$HOME/make-logs/ --check-version-skew=false"
 
 # if we set PARALLEL=true, then skip serial tests and add --ginkgo-parallel to the args
-PARALLEL="{PARALLEL:-false}"
+PARALLEL="${PARALLEL:-false}"
 if [[ "${PARALLEL}" == "true" ]]; then
     SKIP="${SKIP}|\\[Serial\\]"
     KUBETEST_ARGS="${KUBETEST_ARGS} --ginkgo-parallel"
