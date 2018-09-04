@@ -22,11 +22,11 @@ set -o nounset
 set -o pipefail
 set -x
 
-# get and isntall `kind` to tempdir
-TMP_GOPATH=$(mktemp -d)
-trap 'rm -rf ${TMP_GOPATH}' EXIT
-env "GOPATH=${TMP_GOPATH}" go get k8s.io/test-infra/kind
-PATH="${TMP_GOPATH}/bin:${PATH}"
+# isntall `kind` to tempdir
+TMP_GOBIN=$(mktemp -d)
+trap 'rm -rf ${TMP_GOBIN}' EXIT
+env "GOBIN=${TMP_GOBIN}" go install k8s.io/test-infra/kind
+PATH="${TMP_GOBIN}:${PATH}"
 
 # build the base image
 # TODO(bentheelder): eliminate this once we publish this image
