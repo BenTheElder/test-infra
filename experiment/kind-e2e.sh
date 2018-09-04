@@ -39,7 +39,7 @@ trap 'rm -rf ${TMP_GOPATH}' EXIT
 # copy test-infra into tmp gopath
 cd "${TMP_GOPATH}"
 mkdir -p ./src/k8s.io/
-ln -s "${TREE}" "${TMP_GOPATH}/src/k8s.io"
+ln -s "${TESTINFRA_ROOT}" "${TMP_GOPATH}/src/k8s.io"
 
 env "GOPATH=${TMP_GOPATH}" go install k8s.io/test-infra/kind
 PATH="${TMP_GOPATH}/bin:${PATH}"
