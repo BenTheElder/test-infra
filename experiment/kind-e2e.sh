@@ -22,8 +22,15 @@ set -o nounset
 set -o pipefail
 set -x
 
+# get relative path to test infra root based on script source
 TREE="$(dirname ${BASH_SOURCE[0]})/.."
+# cd to the path
+OLD_PWD="${PWD}"
 cd "${TREE}"
+# save it as the test infra root
+TESTINFRA_ROOT="${PWD}"
+# cd back
+cd "${OLD_PWD}"
 
 # isntall `kind` to tempdir
 TMP_GOPATH=$(mktemp -d)
