@@ -81,7 +81,7 @@ fi
 export KUBECONFIG="${HOME}/.config/kind-config-1"
 
 # run kubetest, if it fails clean up and exit failure
-if ! kubetest "${KUBETEST_ARGS}"
+if ! eval "kubetest ${KUBETEST_ARGS}"
 then
     kind delete
     exit 1
