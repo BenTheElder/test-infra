@@ -50,7 +50,7 @@ kind build base
 kind build node
 
 # make sure we have e2e requirements
-make -C "$(go env GOPATH)/src/k8s.io/kubernetes" all WHAT="cmd/kubectl test/e2e/e2e.test vendor/github.com/onsi/ginkgo"
+make -C all WHAT="cmd/kubectl test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo"
 
 # ginkgo regexes
 FOCUS="${FOCUS:-"\\[Conformance\\]"}"
@@ -82,6 +82,7 @@ export KUBECONFIG="${HOME}/.config/kind-config-1"
 
 # setting this env prevents ginkg e2e from trying to run provider setup
 export KUBERNETES_CONFORMANCE_TEST="y"
+
 # run kubetest, if it fails clean up and exit failure
 if ! eval "kubetest ${KUBETEST_ARGS}"
 then
