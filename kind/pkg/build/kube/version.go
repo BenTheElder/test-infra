@@ -58,8 +58,10 @@ func buildVersionFile(kubeRoot string) error {
 			return fmt.Errorf("could not parse kubernetes version")
 		}
 		if parts[0] == "gitVersion" {
+			gitVersionPath := filepath.Join(outputDir, "git_version")
+			log.Infof("Writing gitVersion: '%s' to %s", parts[1], gitVersionPath)
 			if err := ioutil.WriteFile(
-				filepath.Join(outputDir, "git_version"),
+				gitVersionPath,
 				[]byte(parts[1]),
 				0777,
 			); err != nil {
