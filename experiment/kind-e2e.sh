@@ -50,7 +50,7 @@ kind build base
 kind build node
 
 # make sure we have e2e requirements
-make -C all WHAT="cmd/kubectl test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo"
+make all WHAT="cmd/kubectl test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo"
 
 # ginkgo regexes
 FOCUS="${FOCUS:-"\\[Conformance\\]"}"
