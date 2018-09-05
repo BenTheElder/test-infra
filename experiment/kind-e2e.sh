@@ -80,6 +80,8 @@ fi
 # TODO(bentheelder): provide a `kind` command that can be eval'ed instead
 export KUBECONFIG="${HOME}/.config/kind-config-1"
 
+# setting this env prevents ginkg e2e from trying to run provider setup
+export KUBERNETES_CONFORMANCE_TEST="y"
 # run kubetest, if it fails clean up and exit failure
 if ! eval "kubetest ${KUBETEST_ARGS}"
 then
