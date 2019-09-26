@@ -930,6 +930,9 @@ periodics:
   name: ci-test-infra-autobump-prow
   cluster: test-infra-trusted
   decorate: true
+  decoration_config:
+    git_user_name: "k8s-ci-robot"
+    git_user_email: 
   extra_refs:
   - org: kubernetes
     repo: test-infra
@@ -944,6 +947,15 @@ periodics:
       - --
       args:
       - --github-token=/etc/github-token/oauth
+      env:
+      - name: GIT_AUTHOR_NAME
+        value: "Kubernetes Prow Robot"
+      - name: GIT_AUTHOR_EMAIL
+        value: "k8s-ci-robot@users.noreply.github.com"
+      - name: GIT_COMMITTER_NAME
+        value: "Kubernetes Prow Robot"
+      - name: GIT_COMMITTER_EMAIL
+        value: "k8s-ci-robot@users.noreply.github.com"
       volumeMounts:
       - name: github
         mountPath: /etc/github-token
