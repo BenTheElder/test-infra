@@ -28,7 +28,6 @@ import (
 	"text/template"
 	"time"
 
-	buildv1alpha1 "github.com/knative/build/pkg/apis/build/v1alpha1"
 	pipelinev1alpha1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/diff"
@@ -480,31 +479,6 @@ func TestValidateAgent(t *testing.T) {
 			},
 		},
 		{
-			name: "build_spec requires knative-build agent",
-			base: func(j *JobBase) {
-				j.DecorationConfig = nil
-				j.Spec = nil
-
-				j.BuildSpec = &buildv1alpha1.BuildSpec{}
-			},
-		},
-		{
-			name: "knative-build agent requires build_spec",
-			base: func(j *JobBase) {
-				j.DecorationConfig = nil
-				j.Spec = nil
-
-				j.Agent = b
-			},
-		},
-		{
-			name: "decoration requires kubernetes agent",
-			base: func(j *JobBase) {
-				j.Agent = b
-				j.BuildSpec = &buildv1alpha1.BuildSpec{}
-			},
-		},
-		{
 			name: "non-nil namespace required",
 			base: func(j *JobBase) {
 				j.Namespace = nil
@@ -531,18 +505,6 @@ func TestValidateAgent(t *testing.T) {
 		{
 			name: "accept kubernetes agent without decoration",
 			base: func(j *JobBase) {
-				j.DecorationConfig = nil
-			},
-			pass: true,
-		},
-		{
-			name: "accept knative-build agent",
-			base: func(j *JobBase) {
-				j.Agent = b
-				j.BuildSpec = &buildv1alpha1.BuildSpec{}
-				ns := "custom-namespace"
-				j.Namespace = &ns
-				j.Spec = nil
 				j.DecorationConfig = nil
 			},
 			pass: true,
@@ -1005,16 +967,6 @@ func TestValidateJobBase(t *testing.T) {
 				Name:      "name",
 				Agent:     ka,
 				Spec:      &goodSpec,
-				Namespace: &ns,
-			},
-			pass: true,
-		},
-		{
-			name: "valid build job",
-			base: JobBase{
-				Name:      "name",
-				Agent:     ba,
-				BuildSpec: &buildv1alpha1.BuildSpec{},
 				Namespace: &ns,
 			},
 			pass: true,
