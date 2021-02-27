@@ -54,7 +54,7 @@ presubmits:
         - --use-logexporter
         image: gcr.io/k8s-testimages/kubekins-e2e:v20210226-c001921-master
         resources:
-          # Using 6 CPU to speed up bazel build phase (2 is enough for the test itself)
+          # Using 6 CPU to speed up build phase (2 is enough for the test itself)
           limits:
             cpu: 6
             memory: "14Gi"
@@ -111,7 +111,7 @@ presubmits:
         image: gcr.io/k8s-testimages/kubekins-e2e:v20210226-c001921-master
         resources:
           limits:
-            # Using 6 CPU to speed up bazel build phase (4 is enough for the test itself)
+            # Using 6 CPU to speed up build phase (4 is enough for the test itself)
             cpu: 6
             memory: "16Gi"
           requests:
@@ -222,7 +222,7 @@ presubmits:
         image: gcr.io/k8s-testimages/kubekins-e2e:v20210226-c001921-master
         resources:
           limits:
-            # Using 6 CPU to speed up bazel build phase (4 is enough for the test itself)
+            # Using 6 CPU to speed up build phase (4 is enough for the test itself)
             cpu: 6
             memory: "16Gi"
           requests:
@@ -292,13 +292,9 @@ presubmits:
         - --test-cmd-name=ClusterLoaderV2
         - --timeout=100m
         - --use-logexporter
-        # TODO(krzyzacy): Figure out bazel built kubemark image
-        #env:
-        # - name: KUBEMARK_BAZEL_BUILD
-        # value: "y"
         resources:
           limits:
-            # Using 6 CPU to speed up bazel build phase (4 is enough for the test itself)
+            # Using 6 CPU to speed up build phase (4 is enough for the test itself)
             cpu: 6
             memory: 16Gi
           requests:
@@ -357,13 +353,9 @@ presubmits:
         - --test-cmd-name=ClusterLoaderV2
         - --timeout=1200m
         - --use-logexporter
-        # TODO(krzyzacy): Figure out bazel built kubemark image
-        #env:
-        # - name: KUBEMARK_BAZEL_BUILD
-        # value: "y"
         resources:
           limits:
-            # Using 6 CPU to speed up bazel build phase (4 is enough for the test itself)
+            # Using 6 CPU to speed up build phase (4 is enough for the test itself)
             cpu: 6
             memory: "16Gi"
           requests:
