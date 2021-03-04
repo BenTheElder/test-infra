@@ -23,8 +23,7 @@ presubmits:
         - runner.sh
         image: gcr.io/k8s-testimages/kubekins-e2e:v20210302-a6bf478-master
         args:
-        - make
-        - verify
+        - ./hack/jenkins/verify-dockerized.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -63,8 +62,7 @@ presubmits:
         - runner.sh
         image: gcr.io/k8s-testimages/kubekins-e2e:v20210302-a6bf478-go-canary
         args:
-        - make
-        - verify
+        - ./hack/jenkins/verify-dockerized.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
