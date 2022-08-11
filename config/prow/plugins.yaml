@@ -254,6 +254,11 @@ blockades:
   exceptionregexps:
   - ^prow/(ANNOUNCEMENTS|README)\.md$
   explanation: "All Prow documentation (Markdown files) have moved to https://github.com/kubernetes-sigs/prow as part of https://github.com/kubernetes-sigs/prow/issues/4. Instructions for updating existing docs are at https://docs.prow.k8s.io/docs/contribution-guidelines/#updating-existing-docs."
+- reopos:
+  - kubernetes/test-infra
+  blockregexps:
+  - ^kubetest/.*$
+  explanation: "Per the README Kubetest is deprecated, please see kubetest2 instead https://sigs.k8s.io/kubetest2. Only critical bugfixes may be merged by manually bypassing this blockade."
 
 blunderbuss:
   max_request_count: 2
